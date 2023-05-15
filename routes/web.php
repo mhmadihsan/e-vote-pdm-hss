@@ -20,8 +20,10 @@ Route::get('/', function () {
 
 Route::get('vote',[PollingController::class,'search_ticket']);
 Route::get('voting',[PollingController::class,'voting']);
+Route::post('vote/store',[PollingController::class,'store_vote']);
 
 Route::get('polling',[PollingController::class,'index']);
+Route::get('polling/data',[PollingController::class,'data_polling']);
 
 Auth::routes(['register'=>false]);
 

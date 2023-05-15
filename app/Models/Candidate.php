@@ -13,4 +13,11 @@ class Candidate extends Model
             'name',
             'information',
     ];
+
+    public function voters(){
+        return $this->belongsToMany(Voters::class,
+            'candidate_voters',
+            'candidate_id',
+            'voters_id');
+    }
 }

@@ -2,20 +2,90 @@ $(document).ready(function() {
    // $('#count_show_choice').text('69');
 });
 
-function checking(){
+function checking(check){
     var numberOfChecked = $('input:checkbox:checked').length;
-    $('#count_show_choice').text(numberOfChecked);
     if(numberOfChecked==13){
+        $('#count_show_choice').text(numberOfChecked);
         $('#btn_sumbit').attr('disabled',false);
     }
     else{
         if(numberOfChecked>13){
+            numberOfChecked - 1;
+            $(check).prop('checked', false);
             Swal.fire(
                 'Peringatan',
                 'Tidak Boleh memilih lebih dari 13 calon',
                 'error'
             );
         }
+        $('#count_show_choice').text(numberOfChecked);
         $('#btn_sumbit').attr('disabled',true);
     }
+
 }
+
+
+function submit_vote(btn){
+    var voted =  $('input:checked').map(function(){
+        return $(this).val();
+    }).get();
+    const ticket = getUrlParameter('ticket');
+    $(btn).attr('disabled',true);
+    axios.post(window.location.origin+'/vote/store', {
+        voted: voted,
+        ticket: ticket
+    })
+    .then(function (response) {
+        if(response.data.status=='failed'){
+            Swal.fire(
+                response.data.status,
+                response.data.messages,
+                'error'
+            );
+        }
+        let timerInterval
+        Swal.fire({
+            title: 'Berhasil memvote data',
+            html: 'Berhasil Memvote <b></b> milliseconds.',
+            timer: 1500,
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading()
+                const b = Swal.getHtmlContainer().querySelector('b')
+                timerInterval = setInterval(() => {
+                    b.textContent = Swal.getTimerLeft()
+                }, 100)
+            },
+            willClose: () => {
+                clearInterval(timerInterval)
+                window.location.href = 'polling';
+            }
+        }).then((result) => {
+            /* Read more about handling dismissals below */
+            if (result.dismiss === Swal.DismissReason.timer) {
+                console.log('I was closed by the timer')
+            }
+        })
+        $(btn).attr('disabled',false);
+        //window.location.href = 'polling';
+    })
+    .catch(function (error) {
+        $(btn).attr('disabled',false);
+    });
+}
+
+
+function getUrlParameter(sParam) {
+    var sPageURL = window.location.search.substring(1),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+        }
+    }
+    return false;
+};

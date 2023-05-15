@@ -12,6 +12,10 @@
                     <div class="card-header">Masukan Kode Ticket - Voting </div>
 
                     <div class="card-body">
+                        <div class="mb-3" style="text-align: center;">
+                            <img width="60%" src="{{asset('logo_musda_crop.png')}}"  alt="">
+                        </div>
+
                         <div class="mb-3">
                             <h3 for="exampleFormControlInput1" class="form-label"> Masukan Nomor Tiket E-Voting</h3>
                             <div class="input-group input-group-lg">

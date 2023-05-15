@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Candidate;
+use App\Models\VotedCandidate;
 use App\Models\Voters;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class PollingController extends Controller
 {
@@ -12,6 +15,10 @@ class PollingController extends Controller
 
     public function __construct(Candidate $candidate){
         $this->candidate = $candidate;
+    }
+
+    public function index(){
+        return view('vote.result');
     }
 
 
@@ -30,5 +37,55 @@ class PollingController extends Controller
             ]);
         }
         abort('404','Nothing Have');
+    }
+
+    public function store_vote(Request $request){
+        $validator = Validator::make($request->all(), [
+            'voted'  => 'required|min:13|max:13',
+            'ticket'  => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                "status" => "failed",
+                "messages" => $validator->errors(),
+            ]);
+        }
+        else{
+            $voters = Voters::where('number_ticket',$request->ticket)->first();
+            DB::transaction(function()use($request,$voters){
+                foreach ($request->voted as $v){
+                    VotedCandidate::updateOrCreate(
+                        [
+                            'voters_id'=>$voters->id,
+                            'candidate_id'=>$v
+                        ],
+                        [
+                            'voters_id'=>$voters->id,
+                            'candidate_id'=>$v
+                        ]
+                    );
+                }
+                $voters->voted = true;
+                $voters->update();
+            });
+        }
+        return response()->json([
+            "status" => "success",
+            "messages" => "Berhasil Menyimpan Data",
+        ]);
+    }
+
+    public function data_polling(){
+        $data = Candidate::get()->map(function ($val){
+            $hasil = $val;
+            $hasil->count = $val->voters->count();
+            return $hasil;
+        });
+        return response()->json(
+            [
+                'data'=>$data->pluck('count'),
+                'name'=>$data->pluck('name')
+            ]
+        );
     }
 }

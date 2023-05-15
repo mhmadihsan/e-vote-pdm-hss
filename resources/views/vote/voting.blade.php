@@ -10,7 +10,7 @@
             height:60px;
             bottom:60px;
             right:70px;
-            background-color:#0C9;
+            background-color:#0a58ca;
             color:#FFF;
             border-radius:50px;
             text-align:center;
@@ -48,7 +48,7 @@
                                         <td>
                                             <div class="input-group input-group-lg mb-3">
                                                 <div class="input-group-text">
-                                                    <input onclick="checking()" class="form-check-input mt-0" type="checkbox" value="{{$value->first()->id}}" aria-label="Checkbox for following text input">
+                                                    <input onclick="checking(this)" class="form-check-input mt-0" type="checkbox" value="{{$value->first()->id}}" aria-label="Checkbox for following text input">
                                                 </div>
                                                 <input type="text" value="{{$value->first()->name ?? null}}" readonly class="form-control" aria-label="Text input with checkbox">
                                                 <small>{{$value->first()->information ?? null}}</small>
@@ -59,7 +59,7 @@
                                         <td>
                                             <div class="input-group input-group-lg mb-3">
                                                 <div class="input-group-text">
-                                                    <input onclick="checking()" class="form-check-input mt-0" type="checkbox" value="{{$value->last()->id}}" aria-label="Checkbox for following text input">
+                                                    <input onclick="checking(this)" class="form-check-input mt-0" type="checkbox" value="{{$value->last()->id}}" aria-label="Checkbox for following text input">
                                                 </div>
                                                 <input type="text" value="{{$value->last()->name ?? null}}" readonly class="form-control" aria-label="Text input with checkbox">
                                                 <small>{{$value->last()->information ?? null}}</small>
@@ -77,7 +77,7 @@
                 </div>
             </div>
         </div>
-        <button id="btn_sumbit" disabled class="float">
+        <button id="btn_sumbit" onclick="submit_vote(this)" disabled class="float">
             <p id="count_show_choice" class="my-float">0</p>
         </button>
     </div>
