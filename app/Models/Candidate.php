@@ -12,6 +12,7 @@ class Candidate extends Model
     protected $fillable = [
             'name',
             'information',
+            'image_path'
     ];
 
     public function voters(){

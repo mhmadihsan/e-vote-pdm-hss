@@ -13,7 +13,7 @@
 
                     <div class="card-body">
                         <div class="mb-3" style="text-align: center;">
-                            <img width="60%" src="{{asset('logo_musda_crop.png')}}"  alt="">
+                            <img width="30%" src="{{asset('img/vote.png')}}"  alt="">
                         </div>
 
                         <div class="mb-3">

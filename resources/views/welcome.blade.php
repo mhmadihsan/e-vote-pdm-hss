@@ -8,14 +8,23 @@
                     <div class="card-header">E - Voting </div>
 
                     <div class="card-body">
-                        <img src="{{asset('img/logo_musda.png')}}" class="card-img" alt="">
-                        <hr>
                         <div class="row">
-                            <div class="col-md-2">
-                                <a class="btn btn-block btn-primary" href="{{url('vote')}}">Pemilihan</a>
+                            <a href="{{url('vote')}}">
+                            <div class="mb-3" style="text-align: center;">
+                                <img width="60%" src="{{asset('logo_musda_crop.png')}}"  alt="">
                             </div>
-                            <div class="col-md-2">
-                                <a class="btn btn-block btn-success" href="{{url('polling')}}">Hasil</a>
+                            </a>
+                            <div class="mb-3" style="text-align: center;">
+                                <h3>E-VOTING</h3>
+                            </div>
+                            <div class="mb-3" style="text-align: center;">
+                                <h4>MUSYAWARAH DAERAH MUHAMMADIYAH KE - 11</h4>
+                            </div>
+                            <div class="mb-3" style="text-align: center;">
+                                <h2>HULU SUNGAI SELATAN</h2>
+                            </div>
+                            <div class="mb-3" style="text-align: center;">
+
                             </div>
                         </div>
 

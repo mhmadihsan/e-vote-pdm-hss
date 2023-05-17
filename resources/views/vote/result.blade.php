@@ -9,7 +9,7 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">Result Voting {{env('app_name')}} {{now()->format('d M Y h:m')}}</div>
+                    <div class="card-header">Result Voting {{env('app_name')}} {{now()->toDayDateTimeString()}} </div>
 
                     <div class="card-body">
                         <div style="width:100%;">

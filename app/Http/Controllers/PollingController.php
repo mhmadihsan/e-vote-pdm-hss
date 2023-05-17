@@ -6,6 +6,7 @@ use App\Models\Candidate;
 use App\Models\VotedCandidate;
 use App\Models\Voters;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -17,10 +18,21 @@ class PollingController extends Controller
         $this->candidate = $candidate;
     }
 
-    public function index(){
-        return view('vote.result');
+    public function index(Request $request){
+        if(Auth::user()){
+            if($request->has('jenis')){
+                $candidate = $this->data_result()
+                    ->sortByDesc('count');
+                return view('vote.result_badge',[
+                    'data'=>$candidate
+                ]);
+            }
+            else{
+                return view('vote.result');
+            }
+        }
+        abort(403,'you dont\' have access');
     }
-
 
     public function search_ticket(){
         return view('vote.list');
@@ -33,8 +45,8 @@ class PollingController extends Controller
         if($vote){
             return view('vote.voting',[
                 'ticket'=>$vote,
-                'candidate'=>$this->candidate->get(['id','name','information'])
-            ]);
+                'candidate'=>$this->candidate->get()
+            ])->with('no',1);
         }
         abort('404','Nothing Have');
     }
@@ -76,16 +88,20 @@ class PollingController extends Controller
     }
 
     public function data_polling(){
-        $data = Candidate::get()->map(function ($val){
-            $hasil = $val;
-            $hasil->count = $val->voters->count();
-            return $hasil;
-        });
+        $data = $this->data_result();
         return response()->json(
             [
                 'data'=>$data->pluck('count'),
                 'name'=>$data->pluck('name')
             ]
         );
+    }
+
+    private function data_result(){
+        return Candidate::get()->map(function ($val){
+            $hasil = $val;
+            $hasil->count = $val->voters->count();
+            return $hasil;
+        });
     }
 }

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PollingController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,10 +33,16 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])
 
 Route::group(['prefix'=>'admin'],function ($route){
     $route->group(['prefix'=>'tickets'],function ($route){
-        $route->get('/');
+        $route->get('/',[AdminController::class,'index_tickets'])->name('admin.tickets');
+        $route->get('add',[AdminController::class,'add_tickets'])->name('admin.tickets.add');
+        $route->post('store',[AdminController::class,'store_tickets']);
+        $route->delete('delete/{id}',[AdminController::class,'delete_tickets']);
     });
 
     $route->group(['prefix'=>'candidate'],function ($route){
-        $route->get('/');
+        $route->get('/',[AdminController::class,'index_candidate'])->name('admin.candidate');
+        $route->get('add',[AdminController::class,'add_candidate'])->name('admin.candidate.add');
+        $route->get('edit/{id}',[AdminController::class,'edit_candidate'])->name('admin.candidate.edit');
+        $route->post('update_candidate',[AdminController::class,'update_candidate']);
     });
 });
