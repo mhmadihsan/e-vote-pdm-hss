@@ -22,13 +22,13 @@ class VoterImport implements ToCollection, WithHeadingRow
                     ],
                     [
                         'name_tickets'=>$c['nama'],
-                        'number_ticket'=>mt_rand(1111,9999),
+                        'number_ticket'=>$c['code'],
                         'voted'=>false
                     ]
                 );
             }
             catch (\Throwable $th){
-                dd($th);
+                dd($th,$c);
             }
         }
     }
